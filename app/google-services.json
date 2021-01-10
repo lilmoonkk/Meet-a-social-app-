@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "150858865318",
+    "project_id": "meet-4f7bf",
+    "storage_bucket": "meet-4f7bf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:150858865318:android:dccf8d2c5087d481aef267",
+        "android_client_info": {
+          "package_name": "project.meet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "150858865318-nn344i53h8s8jdbdin0gddkitpqqh8oi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCR8PygEgVJDbpwJXxN4t8nFpye6Ms1scc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "150858865318-nn344i53h8s8jdbdin0gddkitpqqh8oi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
