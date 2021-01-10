@@ -37,7 +37,6 @@ public class SwipeCard extends AppCompatActivity {
         setContentView(R.layout.activity_swipe_card);
 
         al = new ArrayList<>();
-
         CollectionReference users=FirebaseFirestore.getInstance().collection("users");
         users.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -49,7 +48,7 @@ public class SwipeCard extends AppCompatActivity {
                 }
             }});
 
-        arrayAdapter = new ArrayAdapter<>(this, R.layout.item, R.id.helloText, al );
+        arrayAdapter = new ArrayAdapter<>(this, R.layout.item, R.id.name, al );
         SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
         flingContainer.setAdapter(arrayAdapter);
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
