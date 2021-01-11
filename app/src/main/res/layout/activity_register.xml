@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/almendra_italic"
-            android:text="create_a_new_account"
+            android:text="Create A New Account"
             android:textColor="@color/common_google_signin_btn_text_dark_focused"
             android:textSize="22sp"
             android:textStyle="bold" />
@@ -52,8 +52,8 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="gender"
+                android:layout_height="wrap_content"
+                android:text="Gender"
                 android:fontFamily="monospace"
                 android:textColor="#C1BEBE"
                 android:textSize="18sp" />
@@ -64,14 +64,14 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
                 android:fontFamily="monospace"
-                android:text="male" />
+                android:text="Male" />
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:fontFamily="monospace"
-                android:text="female"
+                android:text="Female"
                 android:layout_marginStart="10dp" />
         </RadioGroup>
 
@@ -82,7 +82,7 @@
             android:layout_marginTop="2dp"
             android:fontFamily="monospace"
             android:inputType="textPersonName"
-            android:hint="name"
+            android:hint="Name"
             app:met_floatingLabel="normal" />
 
         <com.rengwuxian.materialedittext.MaterialEditText
@@ -91,7 +91,7 @@
             android:layout_height="55sp"
             android:layout_marginTop="2dp"
             android:fontFamily="monospace"
-            android:hint="age"
+            android:hint="Age"
             android:inputType="number"
             app:met_floatingLabel="normal" />
 
@@ -101,7 +101,7 @@
             android:layout_height="55sp"
             android:layout_marginTop="2dp"
             android:fontFamily="monospace"
-            android:hint="email_address"
+            android:hint="Email Address"
             android:inputType="textEmailAddress"
             app:met_floatingLabel="normal" />
 
@@ -111,7 +111,7 @@
             android:layout_height="55sp"
             android:layout_marginTop="2dp"
             android:fontFamily="monospace"
-            android:hint="password"
+            android:hint="Password"
             android:inputType="textPassword"
             app:met_floatingLabel="normal" />
 
@@ -121,7 +121,7 @@
             android:layout_height="55sp"
             android:layout_marginTop="2dp"
             android:fontFamily="monospace"
-            android:hint="phone_number"
+            android:hint="Phone Number"
             android:inputType="phone"
             app:met_floatingLabel="normal" />
 
@@ -131,7 +131,7 @@
             android:layout_height="55sp"
             android:layout_marginTop="2dp"
             android:fontFamily="monospace"
-            android:hint="about"
+            android:hint="About"
             app:met_floatingLabel="normal" />
 
         <Button
@@ -152,7 +152,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="2dp"
             android:fontFamily="casual"
-            android:text="already_have_an_account_login_here"
+            android:text="Already Have An Account? Login Here"
             android:textColor="@color/common_google_signin_btn_text_dark_focused"
             android:textSize="18sp" />
 

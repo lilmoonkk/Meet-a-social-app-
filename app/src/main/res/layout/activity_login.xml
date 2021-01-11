@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:fontFamily="monospace"
-            android:hint="email_address"
+            android:hint="Email Address"
             android:inputType="textEmailAddress"
             android:textColor="@android:color/white"
             android:textColorHighlight="@color/purple_700"
@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:fontFamily="monospace"
-            android:hint="password"
+            android:hint="Password"
             android:inputType="textPassword"
             android:textColor="@android:color/white"
             android:textColorHighlight="@color/purple_700"
@@ -69,7 +69,7 @@
             android:layout_marginTop="10dp"
             android:fontFamily="casual"
             android:gravity="center"
-            android:text="forgot_you_password"
+            android:text="Forgot Your Password?"
             android:textStyle="bold" />
 
         <Button
@@ -90,7 +90,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:fontFamily="casual"
-            android:text="do_not_have_an_account_create_here"
+            android:text="Do Not Have An Account? Create Here"
             android:textColor="@color/common_google_signin_btn_text_dark_focused"
             android:textSize="18sp" />
 
