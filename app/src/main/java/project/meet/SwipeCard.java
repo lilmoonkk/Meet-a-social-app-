@@ -56,14 +56,27 @@ public class SwipeCard extends AppCompatActivity {
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 for (QueryDocumentSnapshot doc : value) {
                     if(!doc.getId().equals(currentUserID)){
-                        checkUserMatched(doc.getId());
-                        if(!found)
-                        {
-                            StorageReference imageRef = FirebaseStorage.getInstance().getReference().child("users/"+doc.getId()+"/profile.jpg");
-                            cardItem=new Card(doc.getId(),doc.getString("name"),doc.getString("age"),doc.getString("tag"),imageRef);
-                            Cards.add(cardItem);
-                            arrayAdapter.notifyDataSetChanged();
-                        }
+                        DocumentReference reference=FirebaseFirestore.getInstance().collection("users").
+                                document(currentUserID).collection("matches").document(doc.getId());
+                        reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if(task.isSuccessful()){
+                                    DocumentSnapshot document = task.getResult();
+                                    if (document.exists()){
+
+                                    }else{
+                                        StorageReference imageRef = FirebaseStorage.getInstance().getReference().child("users/"+doc.getId()+"/profile.jpg");
+                                        cardItem=new Card(doc.getId(),doc.getString("name"),doc.getString("age"),doc.getString("tag"),imageRef);
+                                        Cards.add(cardItem);
+                                        arrayAdapter.notifyDataSetChanged();
+                                    }
+                                }
+                                else{
+
+                                }
+                            }
+                        });
 
                     }
                 }
@@ -118,7 +131,7 @@ public class SwipeCard extends AppCompatActivity {
         flingContainer.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
             @Override
             public void onItemClicked(int itemPosition, Object dataObject) {
-                Toast.makeText(SwipeCard.this, "Swipe!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SwipeCard.this, "Swipe LEFT to QUIT\nSwipe RIGHT to CHAT", Toast.LENGTH_SHORT).show();
             }
         });
 
