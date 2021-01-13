@@ -41,12 +41,16 @@ public class SwipeCard extends AppCompatActivity {
     private Card cardItem;
     private ArrayList<Card> Cards;
     private arrayAdapter arrayAdapter;
-    final FirebaseUser currentUser= FirebaseAuth.getInstance().getCurrentUser();
-    final String currentUserID=currentUser.getUid();
+    private FirebaseUser currentUser;
+    private String currentUserID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_swipe_card);
+
+        currentUser= FirebaseAuth.getInstance().getCurrentUser();
+        currentUserID=currentUser.getUid();
+
 
         Cards = new ArrayList<Card>();
         arrayAdapter = new arrayAdapter(this, R.layout.item, Cards);
@@ -136,49 +140,6 @@ public class SwipeCard extends AppCompatActivity {
         });
 
     }
-    boolean found;
-    public void checkUserMatched(String userID){
-        CollectionReference reference=FirebaseFirestore.getInstance().collection("users").
-                document(currentUserID).collection("matches");
-        reference.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
-                for (QueryDocumentSnapshot doc : value) {
-                    if(doc.getId().equals(userID)){
-
-                        found=true;
-
-                        break;
-                    }
-                    else{
-                        found=false;
-
-                    }
-                }
-            }});
-    }
-
-    public boolean CheckUserMatched(String userID){
-        DocumentReference reference=FirebaseFirestore.getInstance().collection("users").
-                document(currentUserID).collection("matches").document("userID");
-        reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        found=true;
-                    } else {
-                        found=false;
-                    }
-                } else {
-                    Log.d("tag", "Failed with: ", task.getException());
-                }
-            }
-
-        });
-        return found;
-    }
 }
 

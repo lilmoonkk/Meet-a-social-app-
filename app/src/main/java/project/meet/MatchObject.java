@@ -1,5 +1,7 @@
 package project.meet;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.firebase.storage.StorageReference;
 
 public class MatchObject {

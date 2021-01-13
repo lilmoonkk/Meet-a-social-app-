@@ -31,9 +31,25 @@
         android:fontFamily="@font/almendra_italic"
         android:onClick="Match"
         android:text="Match"
+        android:layout_marginLeft="250dp"
+        android:layout_marginTop="70dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/verifyMsg"
+        app:layout_constraintBottom_toTopOf="@+id/resendLink" />
+
+    <Button
+        android:id="@+id/chatlist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/almendra_italic"
+        android:onClick="Chat"
+        android:text="Chat"
+        android:layout_marginLeft="250dp"
+        android:layout_marginTop="130dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/swipeCard"
         app:layout_constraintBottom_toTopOf="@+id/resendLink" />
 
     <Button

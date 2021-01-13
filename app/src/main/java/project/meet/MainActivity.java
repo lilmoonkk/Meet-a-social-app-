@@ -110,4 +110,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SwipeCard.class);
         startActivity(intent);
     }
+
+    public void Chat(View view){
+        Intent intent = new Intent(this, ChatDisplay.class);
+        startActivity(intent);
+    }
 }
