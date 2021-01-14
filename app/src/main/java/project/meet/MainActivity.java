@@ -98,14 +98,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void logout(View view) {
-        // log out
-        FirebaseAuth.getInstance().signOut();
-        Intent i = new Intent(MainActivity.this, LoginActivity.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(i);
-    }
-
     public void Match(View view){
         Intent intent = new Intent(this, SwipeCard.class);
         startActivity(intent);
@@ -114,5 +106,13 @@ public class MainActivity extends AppCompatActivity {
     public void Chat(View view){
         Intent intent = new Intent(this, ChatDisplay.class);
         startActivity(intent);
+    }
+
+    public void logout(View view) {
+        // log out
+        FirebaseAuth.getInstance().signOut();
+        Intent i = new Intent(MainActivity.this, LoginActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
     }
 }

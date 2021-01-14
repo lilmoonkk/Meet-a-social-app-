@@ -60,7 +60,7 @@ public class ChatDisplay extends AppCompatActivity {
         chatList = (RecyclerView) findViewById(R.id.chatlist);
         matchesLayoutManager = new LinearLayoutManager(ChatDisplay.this);
         chatList.setLayoutManager(matchesLayoutManager);
-        matchObjectList=new ArrayList<MatchObject>();
+        matchObjectList= new ArrayList<>();
         matchesAdapter = new recyclerAdapter(matchObjectList, ChatDisplay.this);
         getEachMatchInfo();
         chatList.setAdapter(matchesAdapter);
@@ -70,31 +70,28 @@ public class ChatDisplay extends AppCompatActivity {
     }
     private String matchID="";
     private void getEachMatchInfo(){
-        matches.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-
+        matches.addSnapshotListener((value, error) -> {
+            if(error==null){
                 String matchID="";
                 DocumentReference matchUser;
                 for (QueryDocumentSnapshot doc : value){
                     matchID=doc.getId();
                     matchUser = users.document(matchID);
-                    matchUser.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                        @Override
-                        public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                            if(error==null){
-                                StorageReference imageRef = FirebaseStorage.getInstance().getReference().child("users/" + value.getId() + "/profile.jpg");
-                                MatchObject obj = new MatchObject(value.getId(), value.getString("name"),
-                                        value.getString("tag"), imageRef);
-                                matchObjectList.add(obj);
-                                matchesAdapter.notifyDataSetChanged();
-                            }
-
+                    matchUser.addSnapshotListener((value1, error1) -> {
+                        if(error1 ==null){
+                            StorageReference imageRef = FirebaseStorage.getInstance().getReference().child("users/" + value1.getId() + "/profile.jpg");
+                            MatchObject obj = new MatchObject(value1.getId(), value1.getString("name"),
+                                    value1.getString("tag"), imageRef);
+                            matchObjectList.add(obj);
+                            matchesAdapter.notifyDataSetChanged();
                         }
+
                     });
 
                 }
             }
+
+
         });
     }
 }
