@@ -52,41 +52,30 @@ public class SwipeCard extends AppCompatActivity {
         currentUserID=currentUser.getUid();
 
 
-        Cards = new ArrayList<Card>();
+        Cards = new ArrayList<>();
         arrayAdapter = new arrayAdapter(this, R.layout.item, Cards);
         CollectionReference users=FirebaseFirestore.getInstance().collection("users");
-        users.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+        users.addSnapshotListener((value, error) -> {
+            if(error==null){
                 for (QueryDocumentSnapshot doc : value) {
                     if(!doc.getId().equals(currentUserID)){
                         DocumentReference reference=FirebaseFirestore.getInstance().collection("users").
                                 document(currentUserID).collection("matches").document(doc.getId());
-                        reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if(task.isSuccessful()){
-                                    DocumentSnapshot document = task.getResult();
-                                    if (document.exists()){
-
-                                    }else{
-                                        StorageReference imageRef = FirebaseStorage.getInstance().getReference().child("users/"+doc.getId()+"/profile.jpg");
-                                        cardItem=new Card(doc.getId(),doc.getString("name"),doc.getString("age"),doc.getString("tag"),imageRef);
-                                        Cards.add(cardItem);
-                                        arrayAdapter.notifyDataSetChanged();
-                                    }
-                                }
-                                else{
-
+                        reference.get().addOnCompleteListener(task -> {
+                            if(task.isSuccessful()){
+                                DocumentSnapshot document = task.getResult();
+                                if (!document.exists()){
+                                    StorageReference imageRef = FirebaseStorage.getInstance().getReference().child("users/"+doc.getId()+"/profile.jpg");
+                                    cardItem=new Card(doc.getId(),doc.getString("name"),doc.getString("age"),doc.getString("tag"),imageRef);
+                                    Cards.add(cardItem);
+                                    arrayAdapter.notifyDataSetChanged();
                                 }
                             }
                         });
-
                     }
                 }
-            }});
-
-
+            }
+        });
 
         SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
         flingContainer.setAdapter(arrayAdapter);
@@ -132,12 +121,8 @@ public class SwipeCard extends AppCompatActivity {
 
 
         // Optionally add an OnItemClickListener
-        flingContainer.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClicked(int itemPosition, Object dataObject) {
-                Toast.makeText(SwipeCard.this, "Swipe LEFT to QUIT\nSwipe RIGHT to CHAT", Toast.LENGTH_SHORT).show();
-            }
-        });
+        flingContainer.setOnItemClickListener((itemPosition, dataObject) ->
+                Toast.makeText(SwipeCard.this, "Swipe LEFT to QUIT\nSwipe RIGHT to CHAT", Toast.LENGTH_SHORT).show());
 
     }
 
