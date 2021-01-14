@@ -78,12 +78,14 @@ public class MainActivity extends AppCompatActivity {
         //Retrieve data from fireStore
         DocumentReference reference = store.collection("users").document(userId);
         reference.addSnapshotListener(this, (value, error) -> {
-            uName.setText(value.getString("name"));
-            uAge.setText(value.getString("age"));
-            uGender.setText(value.getString("gender"));
-            uEmail.setText(value.getString("email"));
-            uPhone.setText(value.getString("phone"));
-            uTag.setText(value.getString("tag"));
+            if(error==null){
+                uName.setText(value.getString("name"));
+                uAge.setText(value.getString("age"));
+                uGender.setText(value.getString("gender"));
+                uEmail.setText(value.getString("email"));
+                uPhone.setText(value.getString("phone"));
+                uTag.setText(value.getString("tag"));
+            }
         });
 
         changeProfile.setOnClickListener(v -> {
@@ -111,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
     public void logout(View view) {
         // log out
         FirebaseAuth.getInstance().signOut();
-        Intent i = new Intent(MainActivity.this, LoginActivity.class);
+        Intent i = new Intent(this, LoginActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
     }

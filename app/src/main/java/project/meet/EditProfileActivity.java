@@ -99,10 +99,9 @@ public class EditProfileActivity extends AppCompatActivity {
                 edited.put("email", txt_email);
                 edited.put("phone",txt_phone);
                 edited.put("tag",txt_tag);
-                reference.update(edited).addOnSuccessListener(aVoid1 -> {
-                    Toast.makeText(EditProfileActivity.this, "Profile Updated", Toast.LENGTH_SHORT).show();
-                });
-                Intent intent = new Intent(EditProfileActivity.this, MainActivity.class);
+                reference.update(edited).addOnSuccessListener(aVoid1 ->
+                        Toast.makeText(EditProfileActivity.this, "Profile Updated", Toast.LENGTH_SHORT).show());
+                Intent intent = new Intent(this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }).addOnFailureListener(e ->
