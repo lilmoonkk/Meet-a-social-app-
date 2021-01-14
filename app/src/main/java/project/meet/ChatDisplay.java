@@ -82,13 +82,14 @@ public class ChatDisplay extends AppCompatActivity {
                     matchUser.addSnapshotListener(new EventListener<DocumentSnapshot>() {
                         @Override
                         public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                            if(value.exists()) {
+                            if(error==null){
                                 StorageReference imageRef = FirebaseStorage.getInstance().getReference().child("users/" + value.getId() + "/profile.jpg");
                                 MatchObject obj = new MatchObject(value.getId(), value.getString("name"),
                                         value.getString("tag"), imageRef);
                                 matchObjectList.add(obj);
                                 matchesAdapter.notifyDataSetChanged();
                             }
+
                         }
                     });
 
