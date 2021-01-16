@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     FirebaseAuth auth;
     FirebaseFirestore store;
     String userId;
-    Button resendLink, changeProfile, logOut;
+    Button resendLink, changeProfile, logOut, match, chat;
     FirebaseUser user;
     StorageReference storageReference;
 
@@ -46,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
         profileImage = findViewById(R.id.profilePic);
         changeProfile = findViewById(R.id.editProfile);
         logOut = findViewById(R.id.logOut_btn);
-
+        match = findViewById(R.id.swipeCard);
+        chat = findViewById(R.id.chatlist);
         auth = FirebaseAuth.getInstance();
         store = FirebaseFirestore.getInstance();
         userId = auth.getCurrentUser().getUid();
@@ -56,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
         if(!user.isEmailVerified()){
             verifyMsg.setVisibility(View.VISIBLE);
             resendLink.setVisibility(View.VISIBLE);
+            match.setVisibility(View.GONE);
+            chat.setVisibility(View.GONE);
 
             resendLink.setOnClickListener(v ->
                     user.sendEmailVerification().addOnSuccessListener(aVoid -> {
@@ -63,12 +66,16 @@ public class MainActivity extends AppCompatActivity {
                         if (user.isEmailVerified()) {
                             verifyMsg.setVisibility(View.GONE);
                             resendLink.setVisibility(View.GONE);
+                            match.setVisibility(View.VISIBLE);
+                            chat.setVisibility(View.VISIBLE);
                         }
                     }).addOnFailureListener(e -> Log.d("tag", "onFailure: Email not sent " + e.getMessage())));
         }
         else{
             verifyMsg.setVisibility(View.GONE);
             resendLink.setVisibility(View.GONE);
+            match.setVisibility(View.VISIBLE);
+            chat.setVisibility(View.VISIBLE);
         }
 
         //display user profile image
