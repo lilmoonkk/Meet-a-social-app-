@@ -12,6 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Meet">
+        <activity android:name=".ChatRoom"></activity>
         <activity android:name=".ChatDisplay">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />

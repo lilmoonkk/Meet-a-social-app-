@@ -9,12 +9,14 @@ public class MatchObject {
     private String name;
     private String tag;
     private StorageReference imageRef;
+    private String chatID;
 
-    public MatchObject (String userID, String name, String tag, StorageReference imageRef){
+    public MatchObject (String userID, String name, String tag, StorageReference imageRef, String chatID){
         this.userID = userID;
         this.name = name;
         this.tag = tag;
         this.imageRef = imageRef;
+        this.chatID = chatID;
     }
 
     public String getUserID(){
@@ -47,5 +49,13 @@ public class MatchObject {
 
     public void setImageRef(StorageReference profileImageUrl){
         this.imageRef = profileImageUrl;
+    }
+
+    public String getchatID(){
+        return chatID;
+    }
+
+    public void setChatID(String chatID){
+        this.chatID = chatID;
     }
 }

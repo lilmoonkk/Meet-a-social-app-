@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
@@ -101,11 +102,17 @@ public class SwipeCard extends AppCompatActivity {
             public void onRightCardExit(Object dataObject) {
                 Toast.makeText(SwipeCard.this, "Let's chat!", Toast.LENGTH_SHORT).show();
                 Card object = (Card) dataObject;
+                //Add chatID to databse
+                DocumentReference matchID=FirebaseFirestore.getInstance().collection("Chats").document();
+                String chatID=matchID.getId();
+                Map<String, Object> chatData = new HashMap<>();
+                matchID.set(chatData);
+                //Add chatID to matches
                 DocumentReference reference =users.document(currentUserID).collection("matches").document(object.getUserID());
                 Map<String, Object> docData = new HashMap<>();
-                //docData.put("match", "yes");
+                docData.put("chatID", chatID);
                 reference.set(docData);
-
+                switchToChatRoom(object.getUserID(),chatID);
             }
 
             @Override
@@ -124,6 +131,13 @@ public class SwipeCard extends AppCompatActivity {
         flingContainer.setOnItemClickListener((itemPosition, dataObject) ->
                 Toast.makeText(SwipeCard.this, "Swipe LEFT to QUIT\nSwipe RIGHT to CHAT", Toast.LENGTH_SHORT).show());
 
+    }
+
+    public void switchToChatRoom(String matchUserID, String chatID){
+        Intent intent = new Intent(this, ChatRoom.class);
+        intent.putExtra("oppositeUserID",matchUserID);
+        intent.putExtra("chatID",chatID);
+        startActivity(intent);
     }
 
 }

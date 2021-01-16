@@ -45,6 +45,7 @@ public class ChatDisplay extends AppCompatActivity {
     private RecyclerView.LayoutManager matchesLayoutManager;
     private RecyclerView.Adapter matchesAdapter;
     private ArrayList<MatchObject> matchObjectList;
+    private String chatID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,12 +61,11 @@ public class ChatDisplay extends AppCompatActivity {
         chatList = (RecyclerView) findViewById(R.id.chatlist);
         matchesLayoutManager = new LinearLayoutManager(ChatDisplay.this);
         chatList.setLayoutManager(matchesLayoutManager);
-        matchObjectList= new ArrayList<>();
+        matchObjectList= new ArrayList<MatchObject>();
         matchesAdapter = new recyclerAdapter(matchObjectList, ChatDisplay.this);
-        getEachMatchInfo();
         chatList.setAdapter(matchesAdapter);
 
-
+        getEachMatchInfo();
 
     }
     private String matchID="";
@@ -77,11 +77,12 @@ public class ChatDisplay extends AppCompatActivity {
                 for (QueryDocumentSnapshot doc : value){
                     matchID=doc.getId();
                     matchUser = users.document(matchID);
+                    chatID = doc.getString("chatID");
                     matchUser.addSnapshotListener((value1, error1) -> {
                         if(error1 ==null){
                             StorageReference imageRef = FirebaseStorage.getInstance().getReference().child("users/" + value1.getId() + "/profile.jpg");
                             MatchObject obj = new MatchObject(value1.getId(), value1.getString("name"),
-                                    value1.getString("tag"), imageRef);
+                                    value1.getString("tag"), imageRef, chatID);
                             matchObjectList.add(obj);
                             matchesAdapter.notifyDataSetChanged();
                         }

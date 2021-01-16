@@ -35,6 +35,7 @@ public class recyclerAdapter extends RecyclerView.Adapter<MatchHolder>{
         matchesList.get(position).getImageRef().getDownloadUrl().addOnSuccessListener(uri -> Picasso.get().load(uri).into(holder.profileImage));
         holder.name.setText(matchesList.get(position).getName());
         holder.tag.setText(matchesList.get(position).getTag());
+        holder.chatID.setText(matchesList.get(position).getchatID());
     }
 
     @Override

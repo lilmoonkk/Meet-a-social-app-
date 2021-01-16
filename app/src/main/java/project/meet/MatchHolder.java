@@ -1,5 +1,6 @@
 package project.meet;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -8,9 +9,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MatchHolder extends RecyclerView.ViewHolder {
+import static androidx.core.content.ContextCompat.startActivity;
+
+public class MatchHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
     CircleImageView profileImage;
-    TextView name, tag;
+    TextView name, tag, chatID;
 
 
 
@@ -20,5 +23,16 @@ public class MatchHolder extends RecyclerView.ViewHolder {
         profileImage=itemView.findViewById(R.id.profileImage);
         name=itemView.findViewById(R.id.name);
         tag=itemView.findViewById(R.id.tag);
+        chatID=itemView.findViewById(R.id.chatID);
+
+        itemView.setOnClickListener(this);
     }
+
+    @Override
+    public void onClick(View v) {
+        Intent intent=new Intent(v.getContext(), ChatRoom.class);
+        intent.putExtra("chatID",chatID.getText().toString());
+        v.getContext().startActivity(intent);
+    }
+
 }
