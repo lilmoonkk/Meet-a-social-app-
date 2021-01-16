@@ -30,13 +30,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ChatRoom extends AppCompatActivity {
-    private String chatID;
+    private String chatID, matchID, userID;
     private EditText currentMsg;
     private Button send;
     private FirebaseUser currentUser;
     private String currentUserID, oppositeUserID;
-    private DocumentReference currentUserRef;
-    private CollectionReference messageListRef;
+    private DocumentReference currentMessageRef;
+    private CollectionReference messageListRef, users, matches;
     private ArrayList<MessageObject> messageList;
     private RecyclerView msgListRV;
     private RecyclerView.LayoutManager msgLayoutManager;
@@ -48,6 +48,39 @@ public class ChatRoom extends AppCompatActivity {
 
         chatID=getIntent().getStringExtra("chatID");
         oppositeUserID = getIntent().getStringExtra("oppositeUserID");
+/*
+        if(oppositeUserID==null){
+            users=FirebaseFirestore.getInstance().collection("users");
+            //to get each userID
+            users.addSnapshotListener((value, error) -> {
+                if(error==null){
+                    for (QueryDocumentSnapshot doc : value){
+                        //to get each matchID
+                        matches=users.document(doc.getId()).collection("matches");
+                        matches.addSnapshotListener((value1, error1) -> {
+                            if(error1==null){
+                                for (QueryDocumentSnapshot doc1 : value1){
+                                    matchID=doc1.getId();
+
+                                    if(matchID==currentUserID){
+                                        oppositeUserID=matchID;
+                                        break;
+                                    }
+
+
+                                } }});
+
+
+        } }});}*/
+        if(oppositeUserID==null){
+            DocumentReference singleChat=FirebaseFirestore.getInstance().collection("Chats").
+                    document(chatID);
+            singleChat.addSnapshotListener(this, (value, error) -> {
+                if(error==null){
+                    oppositeUserID=value.getString("user2");
+                }
+            });
+        }
 
         currentUser= FirebaseAuth.getInstance().getCurrentUser();
         currentUserID=currentUser.getUid();
@@ -56,6 +89,7 @@ public class ChatRoom extends AppCompatActivity {
 
         send=findViewById(R.id.send);
         currentMsg=findViewById(R.id.textbox);
+
 
         messageList= new ArrayList<MessageObject>();
         msgListRV = (RecyclerView) findViewById(R.id.messagelist);
@@ -88,13 +122,13 @@ public class ChatRoom extends AppCompatActivity {
                 }
             });*/
             addChatIDtoOUser();
-            currentUserRef=FirebaseFirestore.getInstance().collection("Chats").
+            currentMessageRef=FirebaseFirestore.getInstance().collection("Chats").
                     document(chatID).collection("message").document();
             Map<String, Object> docData = new HashMap<>();
             docData.put("sentBy", currentUserID);
             docData.put("message", currentMsgText);
             docData.put("timeSent", Timestamp.now());
-            currentUserRef.set(docData);
+            currentMessageRef.set(docData);
             currentMsg.getText().clear();
         }
     }
@@ -109,6 +143,8 @@ public class ChatRoom extends AppCompatActivity {
                     Map<String, Object> docData = new HashMap<>();
                     docData.put("chatID", chatID);
                     reference.set(docData);
+                }else{
+                    return;
                 }
             }
         });

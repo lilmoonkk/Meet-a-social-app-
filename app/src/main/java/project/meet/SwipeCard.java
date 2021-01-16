@@ -44,6 +44,7 @@ public class SwipeCard extends AppCompatActivity {
     private arrayAdapter arrayAdapter;
     private FirebaseUser currentUser;
     private String currentUserID;
+    private DocumentReference singleChat;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,6 +113,13 @@ public class SwipeCard extends AppCompatActivity {
                 Map<String, Object> docData = new HashMap<>();
                 docData.put("chatID", chatID);
                 reference.set(docData);
+                //Add userIDs to respective chat
+                singleChat=FirebaseFirestore.getInstance().collection("Chats").
+                        document(chatID);
+                Map<String, Object> data = new HashMap<>();
+                data.put("user1", currentUserID);
+                data.put("user2", object.getUserID());
+                singleChat.set(data);
                 switchToChatRoom(object.getUserID(),chatID);
             }
 
@@ -137,6 +145,7 @@ public class SwipeCard extends AppCompatActivity {
         Intent intent = new Intent(this, ChatRoom.class);
         intent.putExtra("oppositeUserID",matchUserID);
         intent.putExtra("chatID",chatID);
+
         startActivity(intent);
     }
 

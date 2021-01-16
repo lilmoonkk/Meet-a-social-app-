@@ -39,7 +39,7 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesHolder
         }
         else{
             holder.msg.setBackgroundColor(Color.parseColor("#000000"));
-            holder.msg.setGravity(Gravity.START);
+            holder.msg.setGravity(Gravity);
         }
     }
 
