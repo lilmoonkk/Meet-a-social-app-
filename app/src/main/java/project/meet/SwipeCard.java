@@ -115,9 +115,8 @@ public class SwipeCard extends AppCompatActivity {
                 Map<String, Object> docData = new HashMap<>();
                 docData.put("chatID", chatID);
                 reference.set(docData);
-                //Add userIDs to respective chat
 
-                //switchToChatRoom(object.getUserID(),chatID);
+                switchToChatRoom(object.getUserID(),chatID);
             }
 
             @Override
@@ -140,7 +139,7 @@ public class SwipeCard extends AppCompatActivity {
 
     public void switchToChatRoom(String matchUserID, String chatID){
         Intent intent = new Intent(this, ChatRoom.class);
-        intent.putExtra("oppositeUserID",matchUserID);
+        intent.putExtra("oppositeuserID",matchUserID);
         intent.putExtra("chatID",chatID);
 
         startActivity(intent);

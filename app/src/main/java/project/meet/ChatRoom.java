@@ -50,43 +50,11 @@ public class ChatRoom extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_room);
 
-
         chatID=getIntent().getStringExtra("chatID");
         oppositeUserID = getIntent().getStringExtra("oppositeuserID");
-        System.out.println("CHatID in chat room"+chatID);
 
-/*
-        if(oppositeUserID==null){
-            users=FirebaseFirestore.getInstance().collection("users");
-            //to get each userID
-            users.addSnapshotListener((value, error) -> {
-                if(error==null){
-                    for (QueryDocumentSnapshot doc : value){
-                        //to get each matchID
-                        matches=users.document(doc.getId()).collection("matches");
-                        matches.addSnapshotListener((value1, error1) -> {
-                            if(error1==null){
-                                for (QueryDocumentSnapshot doc1 : value1){
-                                    matchID=doc1.getId();
-
-                                    if(matchID==currentUserID){
-                                        oppositeUserID=matchID;
-                                        break;
-                                    }
-
-
-                                } }});
-
-
-        } }});}*/
         currentUser= FirebaseAuth.getInstance().getCurrentUser();
         currentUserID=currentUser.getUid();
-
-
-
-
-        System.out.println("oppositeUserID"+oppositeUserID);
-
 
         messageListRef = FirebaseFirestore.getInstance().collection("Chats").
                 document(chatID).collection("message");
@@ -116,32 +84,6 @@ public class ChatRoom extends AppCompatActivity {
     private void sendMessage(){
         String currentMsgText=currentMsg.getText().toString();
         if(!currentMsgText.isEmpty()){
-            /*messagelist = FirebaseFirestore.getInstance().collection("Chats").document(chatID).collection("message");
-            messagelist.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if(task.isSuccessful()){
-                        if(task.getResult().size() == 0){
-                            addChatIDtoOUser();
-                        }
-                    }
-                }
-            });*/
-          /*  if(oppositeUserID==null){
-                DocumentReference singleChat=FirebaseFirestore.getInstance().collection("Chats").
-                        document(chatID);
-                singleChat.addSnapshotListener(this, (value, error) -> {
-                    if(error==null){
-                        user1=value.getString("user1");
-                        user2=value.getString("user2");
-
-                        if(currentUserID==user1){
-                            oppositeUserID=user2;
-                        }else{
-                            oppositeUserID=user1;
-                        }*/
-
-                        System.out.println("Opposite user in send message"+oppositeUserID);
                         addChatIDtoOUser();
                         currentMessageRef=FirebaseFirestore.getInstance().collection("Chats").
                                 document(chatID).collection("message").document();
@@ -152,14 +94,11 @@ public class ChatRoom extends AppCompatActivity {
                         currentMessageRef.set(docData);
                         currentMsg.getText().clear();
                     }
-              //  });
+
             }
 
-       // }
-   // }
 
     private void addChatIDtoOUser(){
-        System.out.println("Opposite user"+oppositeUserID);
         DocumentReference reference=FirebaseFirestore.getInstance().collection("users").
                 document(oppositeUserID).collection("matches").document(currentUserID);
         reference.get().addOnCompleteListener(task -> {
@@ -204,12 +143,12 @@ public class ChatRoom extends AppCompatActivity {
         });
 
     }
-
+/*
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         Intent intent = new Intent(this, ChatDisplay.class);
         startActivity(intent);
         finish();
-    }
+    }*/
 }

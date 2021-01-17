@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     FirebaseAuth auth;
     FirebaseFirestore store;
     String userId;
-    Button resendLink, changeProfile, logOut, match, chat;
+    Button resendLink, changeProfile, doneVerify, logOut, match, chat;
     FirebaseUser user;
     StorageReference storageReference;
 
@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         uTag = findViewById(R.id.profileTag);
         verifyMsg = findViewById(R.id.verifyMsg);
         resendLink = findViewById(R.id.resendLink);
+        doneVerify = findViewById(R.id.doneVerify);
         profileImage = findViewById(R.id.profilePic);
         changeProfile = findViewById(R.id.editProfile);
         logOut = findViewById(R.id.logOut_btn);
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         if(!user.isEmailVerified()){
             verifyMsg.setVisibility(View.VISIBLE);
             resendLink.setVisibility(View.VISIBLE);
+            doneVerify.setVisibility(View.VISIBLE);
             match.setVisibility(View.GONE);
             chat.setVisibility(View.GONE);
 
@@ -66,14 +68,24 @@ public class MainActivity extends AppCompatActivity {
                         if (user.isEmailVerified()) {
                             verifyMsg.setVisibility(View.GONE);
                             resendLink.setVisibility(View.GONE);
+                            doneVerify.setVisibility(View.GONE);
                             match.setVisibility(View.VISIBLE);
                             chat.setVisibility(View.VISIBLE);
                         }
                     }).addOnFailureListener(e -> Log.d("tag", "onFailure: Email not sent " + e.getMessage())));
+
+            doneVerify.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                    startActivity(getIntent());
+                }
+            });
         }
         else{
             verifyMsg.setVisibility(View.GONE);
             resendLink.setVisibility(View.GONE);
+            doneVerify.setVisibility(View.GONE);
             match.setVisibility(View.VISIBLE);
             chat.setVisibility(View.VISIBLE);
         }
