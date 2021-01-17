@@ -62,20 +62,8 @@
         android:fontFamily="@font/almendra_italic"
         android:text="Verify Now"
         android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="@id/profilePic"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/verifyMsg"
-        app:layout_constraintBottom_toTopOf="@+id/profilePic"/>
-
-    <Button
-        android:id="@+id/doneVerify"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/almendra_italic"
-        android:text="Done Verify"
-        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/profilePic"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/verifyMsg"
         app:layout_constraintBottom_toTopOf="@+id/profilePic"/>
 
