@@ -58,20 +58,24 @@ public class ChatDisplay extends AppCompatActivity {
                 document(currentUserID).collection("matches");
         users=FirebaseFirestore.getInstance().collection("users");
         storageReference = FirebaseStorage.getInstance().getReference();
+
+        matchObjectList= new ArrayList<MatchObject>();
+        getEachMatchInfo();
+
         chatList = (RecyclerView) findViewById(R.id.chatlist);
         matchesLayoutManager = new LinearLayoutManager(ChatDisplay.this);
         chatList.setLayoutManager(matchesLayoutManager);
-        matchObjectList= new ArrayList<MatchObject>();
         matchesAdapter = new recyclerAdapter(matchObjectList, ChatDisplay.this);
         chatList.setAdapter(matchesAdapter);
 
-        getEachMatchInfo();
+
 
     }
     private String matchID="";
     private void getEachMatchInfo(){
         matches.addSnapshotListener((value, error) -> {
             if(error==null){
+                matchObjectList.clear();
                 String matchID="";
                 DocumentReference matchUser;
                 for (QueryDocumentSnapshot doc : value){

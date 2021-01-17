@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +24,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnPausedListener;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
@@ -30,7 +32,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ChatRoom extends AppCompatActivity {
-    private String chatID, matchID, userID;
+    private String chatID, matchID, userID,user1, user2;
     private EditText currentMsg;
     private Button send;
     private FirebaseUser currentUser;
@@ -72,18 +74,28 @@ public class ChatRoom extends AppCompatActivity {
 
 
         } }});}*/
+        currentUser= FirebaseAuth.getInstance().getCurrentUser();
+        currentUserID=currentUser.getUid();
+
         if(oppositeUserID==null){
             DocumentReference singleChat=FirebaseFirestore.getInstance().collection("Chats").
                     document(chatID);
             singleChat.addSnapshotListener(this, (value, error) -> {
                 if(error==null){
-                    oppositeUserID=value.getString("user2");
+                    user1=value.getString("user1");
+                    user2=value.getString("user2");
+
+                    if(currentUserID==user1){
+                        oppositeUserID=user2;
+                    }else{
+                        oppositeUserID=user1;
+                    }
                 }
             });
         }
 
-        currentUser= FirebaseAuth.getInstance().getCurrentUser();
-        currentUserID=currentUser.getUid();
+
+
         messageListRef = FirebaseFirestore.getInstance().collection("Chats").
                 document(chatID).collection("message");
 
@@ -92,11 +104,13 @@ public class ChatRoom extends AppCompatActivity {
 
 
         messageList= new ArrayList<MessageObject>();
+        getEachMessage();
+
         msgListRV = (RecyclerView) findViewById(R.id.messagelist);
+        msgListRV.setNestedScrollingEnabled(false);
         msgLayoutManager = new LinearLayoutManager(ChatRoom.this);
         msgListRV.setLayoutManager(msgLayoutManager);
         msgAdapter = new MessagesRecyclerAdapter(messageList, ChatRoom.this);
-        getEachMessage();
         msgListRV.setAdapter(msgAdapter);
 
         send.setOnClickListener(new View.OnClickListener() {
@@ -121,9 +135,10 @@ public class ChatRoom extends AppCompatActivity {
                     }
                 }
             });*/
-            addChatIDtoOUser();
+
             currentMessageRef=FirebaseFirestore.getInstance().collection("Chats").
                     document(chatID).collection("message").document();
+            addChatIDtoOUser();
             Map<String, Object> docData = new HashMap<>();
             docData.put("sentBy", currentUserID);
             docData.put("message", currentMsgText);
@@ -154,15 +169,16 @@ public class ChatRoom extends AppCompatActivity {
     private boolean sentByCurrentUser=false;
     DocumentReference chatRef;
     private void getEachMessage(){
+
         messageListRef.orderBy("timeSent").addSnapshotListener((value, error) -> {
-            if(error==null){
-                DocumentReference matchUser;
+            if(error==null && value !=null){
+                messageList.clear();
                 for (QueryDocumentSnapshot doc : value){
                     messageID=doc.getId();
                     chatRef=FirebaseFirestore.getInstance().collection("Chats").
                             document(chatID).collection("message").document(messageID);
                     chatRef.addSnapshotListener((value1, error1) -> {
-                        if(error1 ==null){
+                        if(error1 ==null && value1 != null){
                                 MessageObject obj = new MessageObject(value1.getString("message"), value1.getString("sentBy").equals(currentUserID));
                                 messageList.add(obj);
                                 msgAdapter.notifyDataSetChanged();
@@ -174,6 +190,13 @@ public class ChatRoom extends AppCompatActivity {
 
 
         });
+
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, ChatDisplay.class);
+        startActivity(intent);
+    }
 }

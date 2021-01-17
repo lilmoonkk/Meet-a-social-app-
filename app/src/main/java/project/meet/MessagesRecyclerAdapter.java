@@ -34,12 +34,11 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesHolder
     public void onBindViewHolder(MessagesHolder holder, int position) {
         holder.msg.setText(messagesList.get(position).getMsg());
         if(messagesList.get(position).getSentByCurrentUser()){
-            holder.msg.setBackgroundColor(Color.parseColor("#7400FF"));
+            holder.msg.setBackgroundColor(Color.parseColor("#FEBCFF"));
             holder.msg.setGravity(Gravity.END);
         }
         else{
-            holder.msg.setBackgroundColor(Color.parseColor("#000000"));
-            holder.msg.setGravity(Gravity);
+            holder.msg.setGravity(Gravity.START);
         }
     }
 
