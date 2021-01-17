@@ -45,6 +45,7 @@ public class ChatDisplay extends AppCompatActivity {
     private RecyclerView.LayoutManager matchesLayoutManager;
     private RecyclerView.Adapter matchesAdapter;
     private ArrayList<MatchObject> matchObjectList;
+    //private ArrayList<String> chatID;
     private String chatID;
 
     @Override
@@ -65,38 +66,73 @@ public class ChatDisplay extends AppCompatActivity {
         chatList = (RecyclerView) findViewById(R.id.chatlist);
         matchesLayoutManager = new LinearLayoutManager(ChatDisplay.this);
         chatList.setLayoutManager(matchesLayoutManager);
+
         matchesAdapter = new recyclerAdapter(matchObjectList, ChatDisplay.this);
         chatList.setAdapter(matchesAdapter);
 
 
 
+
     }
     private String matchID="";
+    private int x;
+    //Get each match info for current user
     private void getEachMatchInfo(){
         matches.addSnapshotListener((value, error) -> {
             if(error==null){
-                matchObjectList.clear();
+
                 String matchID="";
                 DocumentReference matchUser;
                 for (QueryDocumentSnapshot doc : value){
                     matchID=doc.getId();
                     matchUser = users.document(matchID);
-                    chatID = doc.getString("chatID");
+
                     matchUser.addSnapshotListener((value1, error1) -> {
-                        if(error1 ==null){
-                            StorageReference imageRef = FirebaseStorage.getInstance().getReference().child("users/" + value1.getId() + "/profile.jpg");
-                            MatchObject obj = new MatchObject(value1.getId(), value1.getString("name"),
-                                    value1.getString("tag"), imageRef, chatID);
-                            matchObjectList.add(obj);
-                            matchesAdapter.notifyDataSetChanged();
-                        }
+                            if (error1 == null) {
+                                StorageReference imageRef = FirebaseStorage.getInstance().getReference().child("users/" + value1.getId() + "/profile.jpg");
+                                MatchObject obj = new MatchObject(value1.getId(), value1.getString("name"),
+                                        value1.getString("tag"), imageRef);
+                                matchObjectList.add(obj);
+                                setChatIDForEach();
+                                matchesAdapter.notifyDataSetChanged();
+                                System.out.println("no"+matchObjectList.size());
+                            }
 
                     });
-
                 }
+
             }
 
-
         });
+
+    }
+
+    public void setChatIDForEach(){
+        System.out.println("setChatIDForEach"+matchObjectList.size());
+        matches.addSnapshotListener((value, error) -> {
+            if(error==null){
+                x=0;
+
+                for (QueryDocumentSnapshot doc : value){
+                    chatID=doc.getString("chatID");
+
+                    matchObjectList.get(x).setChatID(chatID);
+                    System.out.println("chatID"+matchObjectList.get(x).getchatID());
+
+                    x++;
+
+
+                    }
+                }
+
+            });
+
+
+     /*   System.out.println("setChatIDForEach"+matchObjectList.size()+chatID.size());
+        for(x=0;x<matchObjectList.size();x++){
+            matchObjectList.get(x).setChatID(chatID.get(x));
+            matchesAdapter.notifyDataSetChanged();
+            System.out.println("chatID"+matchObjectList.get(x).getchatID());
+        }*/
     }
 }

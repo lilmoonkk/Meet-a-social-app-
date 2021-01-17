@@ -11,12 +11,12 @@ public class MatchObject {
     private StorageReference imageRef;
     private String chatID;
 
-    public MatchObject (String userID, String name, String tag, StorageReference imageRef, String chatID){
+    public MatchObject (String userID, String name, String tag, StorageReference imageRef){
         this.userID = userID;
         this.name = name;
         this.tag = tag;
         this.imageRef = imageRef;
-        this.chatID = chatID;
+
     }
 
     public String getUserID(){

@@ -11,7 +11,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static androidx.core.content.ContextCompat.startActivity;
 
-public class MatchHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+public class MatchHolder extends RecyclerView.ViewHolder{
     CircleImageView profileImage;
     TextView name, tag, chatID;
 
@@ -25,14 +25,15 @@ public class MatchHolder extends RecyclerView.ViewHolder implements View.OnClick
         tag=itemView.findViewById(R.id.tag);
         chatID=itemView.findViewById(R.id.chatID);
 
-        itemView.setOnClickListener(this);
-    }
 
+    }
+/*
     @Override
     public void onClick(View v) {
         Intent intent=new Intent(v.getContext(), ChatRoom.class);
+        System.out.println("CHatID in chat display"+chatID.getText().toString());
         intent.putExtra("chatID",chatID.getText().toString());
         v.getContext().startActivity(intent);
     }
-
+*/
 }

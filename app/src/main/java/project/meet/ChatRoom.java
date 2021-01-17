@@ -36,7 +36,8 @@ public class ChatRoom extends AppCompatActivity {
     private EditText currentMsg;
     private Button send;
     private FirebaseUser currentUser;
-    private String currentUserID, oppositeUserID;
+    private String currentUserID;
+    private String oppositeUserID;
     private DocumentReference currentMessageRef;
     private CollectionReference messageListRef, users, matches;
     private ArrayList<MessageObject> messageList;
@@ -49,6 +50,7 @@ public class ChatRoom extends AppCompatActivity {
         setContentView(R.layout.activity_chat_room);
 
         chatID=getIntent().getStringExtra("chatID");
+        System.out.println("CHatID in chat room"+chatID);
         oppositeUserID = getIntent().getStringExtra("oppositeUserID");
 /*
         if(oppositeUserID==null){
@@ -149,6 +151,7 @@ public class ChatRoom extends AppCompatActivity {
     }
 
     private void addChatIDtoOUser(){
+        System.out.println("Opposite user"+oppositeUserID);
         DocumentReference reference=FirebaseFirestore.getInstance().collection("users").
                 document(oppositeUserID).collection("matches").document(currentUserID);
         reference.get().addOnCompleteListener(task -> {
