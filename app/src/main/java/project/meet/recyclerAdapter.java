@@ -42,11 +42,12 @@ public class recyclerAdapter extends RecyclerView.Adapter<MatchHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                System.out.println("position" + position);
-                System.out.println("position[1]" + position);
+                //System.out.println("position" + position);
+                //System.out.println("position[1]" + position);
                 Intent intent = new Intent(v.getContext(), ChatRoom.class);
-                System.out.println("CHatID in chat display" + matchesList.get(position).getchatID());
-                System.out.println("CHatID in chat display" + matchesList.get(position).getName());
+                //System.out.println("CHatID in chat display" + matchesList.get(position).getchatID());
+                //System.out.println("CHatID in chat display" + matchesList.get(position).getName());
+                intent.putExtra("oppositeuserID", matchesList.get(position).getUserID());
                 intent.putExtra("chatID", matchesList.get(position).getchatID());
                 v.getContext().startActivity(intent);
             }

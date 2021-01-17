@@ -95,7 +95,7 @@ public class ChatDisplay extends AppCompatActivity {
                                 matchObjectList.add(obj);
                                 setChatIDForEach();
                                 matchesAdapter.notifyDataSetChanged();
-                                System.out.println("no"+matchObjectList.size());
+                                //System.out.println("no"+matchObjectList.size());
                             }
 
                     });
@@ -108,16 +108,16 @@ public class ChatDisplay extends AppCompatActivity {
     }
 
     public void setChatIDForEach(){
-        System.out.println("setChatIDForEach"+matchObjectList.size());
+        //System.out.println("setChatIDForEach"+matchObjectList.size());
         matches.addSnapshotListener((value, error) -> {
-            if(error==null){
+            if(error==null&&value!=null){
                 x=0;
 
                 for (QueryDocumentSnapshot doc : value){
                     chatID=doc.getString("chatID");
 
                     matchObjectList.get(x).setChatID(chatID);
-                    System.out.println("chatID"+matchObjectList.get(x).getchatID());
+                    //System.out.println("chatID"+matchObjectList.get(x).getchatID());
 
                     x++;
 

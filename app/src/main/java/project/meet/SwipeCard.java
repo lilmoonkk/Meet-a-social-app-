@@ -107,6 +107,8 @@ public class SwipeCard extends AppCompatActivity {
                 DocumentReference matchID=FirebaseFirestore.getInstance().collection("Chats").document();
                 String chatID=matchID.getId();
                 Map<String, Object> chatData = new HashMap<>();
+                chatData.put("user1", currentUserID);
+                chatData.put("user2", object.getUserID());
                 matchID.set(chatData);
                 //Add chatID to matches
                 DocumentReference reference =users.document(currentUserID).collection("matches").document(object.getUserID());
@@ -114,13 +116,8 @@ public class SwipeCard extends AppCompatActivity {
                 docData.put("chatID", chatID);
                 reference.set(docData);
                 //Add userIDs to respective chat
-                singleChat=FirebaseFirestore.getInstance().collection("Chats").
-                        document(chatID);
-                Map<String, Object> data = new HashMap<>();
-                data.put("user1", currentUserID);
-                data.put("user2", object.getUserID());
-                singleChat.set(data);
-                switchToChatRoom(object.getUserID(),chatID);
+
+                //switchToChatRoom(object.getUserID(),chatID);
             }
 
             @Override

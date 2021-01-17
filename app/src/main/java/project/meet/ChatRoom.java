@@ -1,5 +1,6 @@
 package project.meet;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -49,9 +50,11 @@ public class ChatRoom extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_room);
 
+
         chatID=getIntent().getStringExtra("chatID");
+        oppositeUserID = getIntent().getStringExtra("oppositeuserID");
         System.out.println("CHatID in chat room"+chatID);
-        oppositeUserID = getIntent().getStringExtra("oppositeUserID");
+
 /*
         if(oppositeUserID==null){
             users=FirebaseFirestore.getInstance().collection("users");
@@ -79,23 +82,10 @@ public class ChatRoom extends AppCompatActivity {
         currentUser= FirebaseAuth.getInstance().getCurrentUser();
         currentUserID=currentUser.getUid();
 
-        if(oppositeUserID==null){
-            DocumentReference singleChat=FirebaseFirestore.getInstance().collection("Chats").
-                    document(chatID);
-            singleChat.addSnapshotListener(this, (value, error) -> {
-                if(error==null){
-                    user1=value.getString("user1");
-                    user2=value.getString("user2");
 
-                    if(currentUserID==user1){
-                        oppositeUserID=user2;
-                    }else{
-                        oppositeUserID=user1;
-                    }
-                }
-            });
-        }
 
+
+        System.out.println("oppositeUserID"+oppositeUserID);
 
 
         messageListRef = FirebaseFirestore.getInstance().collection("Chats").
@@ -114,7 +104,7 @@ public class ChatRoom extends AppCompatActivity {
         msgListRV.setLayoutManager(msgLayoutManager);
         msgAdapter = new MessagesRecyclerAdapter(messageList, ChatRoom.this);
         msgListRV.setAdapter(msgAdapter);
-
+        System.out.println("Opposite user in onCreate"+oppositeUserID);
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,18 +127,36 @@ public class ChatRoom extends AppCompatActivity {
                     }
                 }
             });*/
+          /*  if(oppositeUserID==null){
+                DocumentReference singleChat=FirebaseFirestore.getInstance().collection("Chats").
+                        document(chatID);
+                singleChat.addSnapshotListener(this, (value, error) -> {
+                    if(error==null){
+                        user1=value.getString("user1");
+                        user2=value.getString("user2");
 
-            currentMessageRef=FirebaseFirestore.getInstance().collection("Chats").
-                    document(chatID).collection("message").document();
-            addChatIDtoOUser();
-            Map<String, Object> docData = new HashMap<>();
-            docData.put("sentBy", currentUserID);
-            docData.put("message", currentMsgText);
-            docData.put("timeSent", Timestamp.now());
-            currentMessageRef.set(docData);
-            currentMsg.getText().clear();
-        }
-    }
+                        if(currentUserID==user1){
+                            oppositeUserID=user2;
+                        }else{
+                            oppositeUserID=user1;
+                        }*/
+
+                        System.out.println("Opposite user in send message"+oppositeUserID);
+                        addChatIDtoOUser();
+                        currentMessageRef=FirebaseFirestore.getInstance().collection("Chats").
+                                document(chatID).collection("message").document();
+                        Map<String, Object> docData = new HashMap<>();
+                        docData.put("sentBy", currentUserID);
+                        docData.put("message", currentMsgText);
+                        docData.put("timeSent", Timestamp.now());
+                        currentMessageRef.set(docData);
+                        currentMsg.getText().clear();
+                    }
+              //  });
+            }
+
+       // }
+   // }
 
     private void addChatIDtoOUser(){
         System.out.println("Opposite user"+oppositeUserID);
@@ -174,20 +182,21 @@ public class ChatRoom extends AppCompatActivity {
     private void getEachMessage(){
 
         messageListRef.orderBy("timeSent").addSnapshotListener((value, error) -> {
-            if(error==null && value !=null){
+            if(error==null && value!=null){
                 messageList.clear();
                 for (QueryDocumentSnapshot doc : value){
-                    messageID=doc.getId();
-                    chatRef=FirebaseFirestore.getInstance().collection("Chats").
-                            document(chatID).collection("message").document(messageID);
-                    chatRef.addSnapshotListener((value1, error1) -> {
-                        if(error1 ==null && value1 != null){
+                    if(doc.exists()) {
+                        messageID = doc.getId();
+                        chatRef = FirebaseFirestore.getInstance().collection("Chats").
+                                document(chatID).collection("message").document(messageID);
+                        chatRef.addSnapshotListener((value1, error1) -> {
+                            if (error1 == null && value1 != null) {
                                 MessageObject obj = new MessageObject(value1.getString("message"), value1.getString("sentBy").equals(currentUserID));
                                 messageList.add(obj);
                                 msgAdapter.notifyDataSetChanged();
-                        }
-                    });
-
+                            }
+                        });
+                    }
                 }
             }
 
@@ -201,5 +210,6 @@ public class ChatRoom extends AppCompatActivity {
         super.onBackPressed();
         Intent intent = new Intent(this, ChatDisplay.class);
         startActivity(intent);
+        finish();
     }
 }
